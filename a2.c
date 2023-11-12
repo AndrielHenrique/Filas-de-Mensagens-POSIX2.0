@@ -55,7 +55,7 @@ int main() {
 
         // Envie uma ordem para o processo B
         int ordem = 1; // Define um codigo de ordem (1 neste caso).
-        if (mq_send(fila_ordem, (const char*) &ordem, sizeof(int), 0) < 0) {
+        if (mq_send(ordem_fila, (const char*) &ordem, sizeof(int), 0) < 0) {
             perror("mq_send"); // Se o envio da ordem para B falhar, exibe uma mensagem de erro e sai.
             exit(1);
         }
