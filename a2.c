@@ -8,7 +8,7 @@
 
 #define FILA_A_PARA_B "/fila_a_para_b" // Define um nome para a fila de mensagens de A para B.
 #define FILA_B_PARA_A "/fila_b_para_a" // Define um nome para a fila de mensagens de B para A.
-#define ORDEM_FILA "/ordem_fila"   // Define um nome para uma fila de ordens.
+#define FILA_ORDEM "/ordem_fila"   // Define um nome para uma fila de ordens.
 
 int main() {
     mqd_t fila_a_para_b, fila_b_para_a, ordem_fila; // Declara variaveis para as filas de mensagens e atributos.
@@ -29,7 +29,7 @@ int main() {
         perror("mq_open"); // Se a abertura da fila B para A falhar, exibe uma mensagem de erro e sai.
         exit(1);
     }
-    if ((ordem_fila = mq_open(ORDEM_FILA, O_WRONLY)) < 0) {
+    if ((ordem_fila = mq_open(FILA_ORDEM, O_WRONLY)) < 0) {
         perror("mq_open"); // Se a abertura da fila de ordens falhar, exibe uma mensagem de erro e sai.
         exit(1);
     }
@@ -55,7 +55,7 @@ int main() {
 
         // Envie uma ordem para o processo B
         int ordem = 1; // Define um codigo de ordem (1 neste caso).
-        if (mq_send(ordem_fila, (const char*) &ordem, sizeof(int), 0) < 0) {
+        if (mq_send(fila_ordem, (const char*) &ordem, sizeof(int), 0) < 0) {
             perror("mq_send"); // Se o envio da ordem para B falhar, exibe uma mensagem de erro e sai.
             exit(1);
         }
@@ -73,7 +73,7 @@ int main() {
 
     mq_close(fila_a_para_b); // Fecha a fila A para B.
     mq_close(fila_b_para_a); // Fecha a fila B para A.
-    mq_close(ordem_fila);  // Fecha a fila de ordens.
+    mq_close(fila_ordem);  // Fecha a fila de ordens.
 
     return 0;
 }
